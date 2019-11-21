@@ -1,0 +1,24 @@
+{
+  "name": "detective_connan_story_info_getter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "eslint . --cache",
+    "eslint:fix": "eslint --fix . --cache"
+  },
+  "author": "yumetodo",
+  "license": "BSL-1.0",
+  "dependencies": {
+    "moment": "^2.24.0",
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "prettier": "^1.19.1"
+  }
+}
