@@ -2,7 +2,9 @@
   "name": "detective_connan_story_info_getter",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "bin": {
+    "detective_connan_story_info_getter": "index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "eslint": "eslint . --cache",
