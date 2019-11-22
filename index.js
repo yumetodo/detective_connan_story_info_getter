@@ -70,7 +70,7 @@ const main = async () => {
   find().then(v =>
     v.forEach((v, i) => {
       console.log(
-        `${i + 1}\t名探偵コナン第${formatStoryNum(v.story_num)}話\t${v.title}\t${moment(v.oaDateId).format('Y/M/D')}`
+        `${i + 1},名探偵コナン第${formatStoryNum(v.story_num)}話,${v.title},${moment(v.oaDateId).format('Y/M/D')}`
       );
     })
   );
