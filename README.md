@@ -10,6 +10,14 @@
 
 出力はカンマ区切りです。もし放送タイトルにカンマが含まれることがあった場合は壊れます(ないでしょ。
 
+導入は以下の手順で可能です。
+
+```plain
+git clone https://github.com/yumetodo/detective_connan_story_info_getter.git
+npm ci
+npm link
+```
+
 ## 放送日の範囲で検索
 
 ```sh
