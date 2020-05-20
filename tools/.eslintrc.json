@@ -1,0 +1,39 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+
+    "plugin:prettier/recommended",
+    "prettier/@typescript-eslint"
+  ],
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "env": { "browser": true, "es6": true },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-throw-literal": "error",
+    "no-unused-expressions": "error",
+    "curly": ["error", "multi-line"],
+    "@typescript-eslint/class-name-casing": "error",
+    "@typescript-eslint/semi": "error",
+    "@typescript-eslint/camelcase": ["error", { "properties": "never" }],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "eqeqeq": ["error", "always", {"null": "ignore"}],
+    "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "_" }],
+    "no-constant-condition": ["error", { "checkLoops": false }],
+    "prettier/prettier": [
+      "error", {
+        "semi": true,
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "printWidth": 120,
+        "arrowParens": "avoid"
+      }
+    ]
+  }
+}

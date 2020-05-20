@@ -118,3 +118,4 @@ dist
 # Other
 resources/*
 !resources/story.json
+tools/*.js

@@ -1,8 +1,13 @@
-const fs = require('fs');
-const path = require('path');
+import * as fs from 'fs';
+import * as path from 'path';
 const resourcesPath = path.join(__dirname, '..', 'resources');
-/** @type {any[]} */
-const data = JSON.parse(fs.readFileSync(path.join(resourcesPath, 'story.json'), { encoding: 'utf-8' }))['item'];
+interface Case {
+  oaDateId: string;
+  title: string;
+  story_num: string;
+  url: string;
+}
+const data: Case[] = JSON.parse(fs.readFileSync(path.join(resourcesPath, 'story.json'), { encoding: 'utf-8' }))['item'];
 // fill missing story number
 {
   let b = false;
@@ -26,20 +31,19 @@ const blank = data.filter(c => c.story_num.length === 0);
 //
 // find duplicated story num from pure
 //
-/** @type {Map<string, int>} */
-const pureDatabase = new Map();
-let foundDuplicated = false;
-pure.forEach((c, i) => {
-  if (pureDatabase.has(c.title)) {
-    foundDuplicated = true;
-    console.error(JSON.stringify(c));
-  }
-  pureDatabase.set(c.title, i);
-});
-if (foundDuplicated) {
-  // eslint-disable-next-line no-process-exit
-  process.exit(1);
-}
+// const pureDatabase = new Map<string, number>();
+// let foundDuplicated = false;
+// pure.forEach((c, i) => {
+//   if (pureDatabase.has(c.title)) {
+//     foundDuplicated = true;
+//     console.error(JSON.stringify(c));
+//   }
+//   pureDatabase.set(c.title, i);
+// });
+// if (foundDuplicated) {
+//   // eslint-disable-next-line no-process-exit
+//   process.exit(1);
+// }
 
 //
 // simply find blank case's original
@@ -48,14 +52,7 @@ const re2 = [...re];
 for (const c of re2) {
   c['story_num'] = c['story_num'].slice(1);
 }
-/**
- *
- * @param {Object} c
- * @param {string} storyNum
- * @param {string} title
- * @param {boolean} isPureTitle
- */
-const appendRe2 = (c, storyNum, title, isPureTitle = false) => {
+const appendRe2 = (c: Case, storyNum: string, title: string, isPureTitle = false) => {
   const n = { ...c };
   n['story_num'] = storyNum;
   if (!isPureTitle) {
@@ -63,54 +60,77 @@ const appendRe2 = (c, storyNum, title, isPureTitle = false) => {
   }
   re2.push(n);
 };
-const blank2 = blank.filter(c => {
-  /** @type {string} */
-  const title = c.title;
-  // just search by name
-  if (pureDatabase.has(title)) {
-    appendRe2(c, pure[pureDatabase.get(title)]['story_num'], title, true);
-    return false;
-  }
-  // find "デジタルリマスター"
-  if (title.endsWith('デジタルリマスター')) {
-    const pureTitile = title.slice(0, -'デジタルリマスター'.length);
-    if (pureDatabase.has(pureTitile)) {
-      appendRe2(c, pure[pureDatabase.get(pureTitile)]['story_num'], pureTitile);
-      return false;
+class PureDatabase {
+  pure: Case[];
+  private titleMap: Map<string, number>;
+  constructor(pure: Case[]) {
+    this.pure = pure;
+    this.titleMap = new Map<string, number>();
+    let foundDuplicated = false;
+    pure.forEach((c, i) => {
+      if (this.titleMap.has(c.title)) {
+        foundDuplicated = true;
+        console.error(JSON.stringify(c));
+      }
+      this.titleMap.set(c.title, i);
+    });
+    if (foundDuplicated) {
+      throw new Error('PureDatabase: duplicated title detected');
     }
-    return true;
   }
-  const degitalReMasterSearchRegex = /(.+)[[（(［]デジタル *リマスター.*[）)\]］]$/;
-  {
-    const executed = degitalReMasterSearchRegex.exec(title);
-    if (executed != null && executed.length === 2) {
-      const pureTitile = executed[1].replace(/[ 〔（]+(.{1,2})編[〕） ]*$/, '（$1編）');
-      if (pureDatabase.has(pureTitile)) {
-        appendRe2(c, pure[pureDatabase.get(pureTitile)]['story_num'], pureTitile);
-        return false;
+  get(title: string) {
+    return pure[this.titleMap.get(title)];
+  }
+  find(title: string, foundhandler: (storyNum: string, title: string, isPureTitle: boolean) => void) {
+    // just search by name
+    if (this.titleMap.has(title)) {
+      foundhandler(this.get(title)['story_num'], title, true);
+      return true;
+    }
+    // find "デジタルリマスター"
+    if (title.endsWith('デジタルリマスター')) {
+      const pureTitile = title.slice(0, -'デジタルリマスター'.length);
+      if (this.titleMap.has(pureTitile)) {
+        foundhandler(this.get(pureTitile)['story_num'], pureTitile, false);
+        return true;
+      }
+      return true;
+    }
+    const degitalReMasterSearchRegex = /(.+)[[（(［]デジタル *リマスター.*[）)\]］]$/;
+    {
+      const executed = degitalReMasterSearchRegex.exec(title);
+      if (executed != null && executed.length === 2) {
+        const pureTitile = executed[1].replace(/[ 〔（]+(.{1,2})編[〕） ]*$/, '（$1編）');
+        if (this.titleMap.has(pureTitile)) {
+          foundhandler(this.get(pureTitile)['story_num'], pureTitile, false);
+          return true;
+        }
       }
     }
-  }
-  // search by inner of bracket
-  const bracket = /「(.+)」/.exec(title);
-  if (bracket != null && bracket.length === 2) {
-    const maybePureTitile = bracket[1];
-    const executed = degitalReMasterSearchRegex.exec(maybePureTitile);
-    const pureTitile = executed != null && executed.length === 2 ? executed[1] : maybePureTitile;
-    if (pureDatabase.has(pureTitile)) {
-      appendRe2(c, pure[pureDatabase.get(pureTitile)]['story_num'], pureTitile);
-      return false;
+    // search by inner of bracket
+    const bracket = /「(.+)」/.exec(title);
+    if (bracket != null && bracket.length === 2) {
+      const maybePureTitile = bracket[1];
+      const executed = degitalReMasterSearchRegex.exec(maybePureTitile);
+      const pureTitile = executed != null && executed.length === 2 ? executed[1] : maybePureTitile;
+      if (this.titleMap.has(pureTitile)) {
+        foundhandler(this.get(pureTitile)['story_num'], pureTitile, false);
+        return true;
+      }
+      const matched = pure.filter(c => c.title.includes(pureTitile));
+      if (matched.length !== 0) {
+        foundhandler(matched[matched.length - 1]['story_num'], pureTitile, false);
+        return true;
+      }
     }
-    const matched = pure.filter(c => c.title.includes(pureTitile));
-    if (matched.length !== 0) {
-      appendRe2(c, matched[matched.length - 1]['story_num'], pureTitile);
-      return false;
-    }
+    return false;
   }
-  return true;
-});
+}
+const pureDatabase = new PureDatabase(pure);
+const blank2 = blank.filter(
+  c => !pureDatabase.find(c.title, (storyNum, title, isPureTitle) => appendRe2(c, storyNum, title, isPureTitle))
+);
 const blank3 = blank2.filter(c => {
-  /** @type {string} */
   const title = c.title;
   if (title.startsWith('ブラックインパクト')) {
     appendRe2(c, '425', '名探偵コナン放送10周年記念超拡大スペシャル「ブラックインパクト！組織の手が届く瞬間」');
@@ -121,7 +141,7 @@ const blank3 = blank2.filter(c => {
       /闇の男爵殺人事件・(.+)編\(デジタルリマスター\)/,
       '闇の男爵（ﾅｲﾄﾊﾞﾛﾝ）殺人事件（$1篇）'
     );
-    appendRe2(c, pure[pureDatabase.get(pureTitile)]['story_num'], pureTitile);
+    appendRe2(c, pureDatabase.get(pureTitile)['story_num'], pureTitile);
     return false;
   }
   if (title.startsWith('園子のアブナイ夏物語')) {
@@ -129,7 +149,7 @@ const blank3 = blank2.filter(c => {
       /園子のアブナイ夏物語（(.+)編）\(デジタル・*リマスター\)/,
       '園子のアブない夏物語（$1編）'
     );
-    appendRe2(c, pure[pureDatabase.get(pureTitile)]['story_num'], pureTitile);
+    appendRe2(c, pureDatabase.get(pureTitile)['story_num'], pureTitile);
     return false;
   }
   const replaceList = [
@@ -152,15 +172,15 @@ const blank3 = blank2.filter(c => {
   ];
   for (const [s, pureTitile] of replaceList) {
     if (s === title) {
-      appendRe2(c, pure[pureDatabase.get(pureTitile)]['story_num'], pureTitile);
+      appendRe2(c, pureDatabase.get(pureTitile)['story_num'], pureTitile);
       return false;
     }
   }
   return true;
 });
 const blank4 = blank3.filter(c => !c.title.includes('映画'));
-const magicKaito = [];
-const specials = [];
+const magicKaito: Case[] = [];
+const specials: Case[] = [];
 for (const c of blank4) {
   const n = { ...c };
   n['story_num'] = undefined;
