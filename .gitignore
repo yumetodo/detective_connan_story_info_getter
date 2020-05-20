@@ -115,4 +115,6 @@ dist
 !.vscode/extensions.json
 *.code-workspace
 
-
+# Other
+resources/*
+!resources/story.json
