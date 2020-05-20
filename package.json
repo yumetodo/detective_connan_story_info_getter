@@ -8,7 +8,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "eslint": "eslint . --cache",
-    "eslint:fix": "eslint --fix . --cache"
+    "eslint:fix": "eslint --fix . --cache",
+    "tools:convert_story:pre": "tsc tools/storyConverter.ts",
+    "tools:convert_story:main": "node tools/storyConverter.js",
+    "tools:convert_story": "run-s tools:convert_story:pre tools:convert_story:main",
+    "tsc": "tsc"
   },
   "author": "yumetodo",
   "license": "BSL-1.0",
