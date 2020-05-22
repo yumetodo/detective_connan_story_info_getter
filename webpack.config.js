@@ -7,6 +7,9 @@ module.exports = {
     'tools/storyConverter': './tools/storyConverter.ts',
   },
   target: 'node',
+  node: {
+    __dirname: false,
+  },
   module: {
     rules: [
       {

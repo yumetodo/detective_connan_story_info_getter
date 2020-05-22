@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { CaseBase, Case, ReCase, PureDatabase } from '../lib/PureDabase';
-const resourcesPath = path.join(__dirname, '..', 'resources');
+const resourcesPath = path.join(__dirname, '..', '..', 'resources');
 const data: Case[] = JSON.parse(fs.readFileSync(path.join(resourcesPath, 'story.json'), { encoding: 'utf-8' }))['item'];
 // fill missing story number
 {

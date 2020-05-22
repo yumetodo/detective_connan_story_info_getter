@@ -11,6 +11,7 @@
     "eslint:fix": "eslint --fix . --cache",
     "tools:convert_story": "node dist/tools/storyConverter.js",
     "build": "webpack --mode=development",
+    "watch": "webpack --mode=development --watch",
     "tsc": "tsc"
   },
   "author": "yumetodo",
