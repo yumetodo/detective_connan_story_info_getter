@@ -1,11 +1,18 @@
 import * as fs from 'fs';
 import * as path from 'path';
 const resourcesPath = path.join(__dirname, '..', 'resources');
-interface Case {
+interface CaseBase {
+  oaDateId: string;
+  title: string;
+  story_num?: string;
+  url: string;
+}
+interface Case extends CaseBase {
   oaDateId: string;
   title: string;
   story_num: string;
   url: string;
+  pureTitle?: string;
 }
 const data: Case[] = JSON.parse(fs.readFileSync(path.join(resourcesPath, 'story.json'), { encoding: 'utf-8' }))['item'];
 // fill missing story number
@@ -25,41 +32,6 @@ const pure = data.filter(c => c.story_num.length !== 0 && !c.story_num.startsWit
 for (const c of pure) {
   c.title = c.title.replace(/(.+)\((.+)\)(.*)/, '$1（$2）$3');
 }
-const re = data.filter(c => c.story_num.length !== 0 && c.story_num.startsWith('R'));
-const blank = data.filter(c => c.story_num.length === 0);
-
-//
-// find duplicated story num from pure
-//
-// const pureDatabase = new Map<string, number>();
-// let foundDuplicated = false;
-// pure.forEach((c, i) => {
-//   if (pureDatabase.has(c.title)) {
-//     foundDuplicated = true;
-//     console.error(JSON.stringify(c));
-//   }
-//   pureDatabase.set(c.title, i);
-// });
-// if (foundDuplicated) {
-//   // eslint-disable-next-line no-process-exit
-//   process.exit(1);
-// }
-
-//
-// simply find blank case's original
-//
-const re2 = [...re];
-for (const c of re2) {
-  c['story_num'] = c['story_num'].slice(1);
-}
-const appendRe2 = (c: Case, storyNum: string, title: string, isPureTitle = false) => {
-  const n = { ...c };
-  n['story_num'] = storyNum;
-  if (!isPureTitle) {
-    n['pureTitle'] = title;
-  }
-  re2.push(n);
-};
 class PureDatabase {
   pure: Case[];
   private titleMap: Map<string, number>;
@@ -79,7 +51,11 @@ class PureDatabase {
     }
   }
   get(title: string) {
-    return pure[this.titleMap.get(title)];
+    const i = this.titleMap.get(title);
+    if (i == null) {
+      throw new Error('PureDatabase#get: not known such a titile');
+    }
+    return pure[i];
   }
   find(title: string, foundhandler: (storyNum: string, title: string, isPureTitle: boolean) => void) {
     // just search by name
@@ -127,6 +103,24 @@ class PureDatabase {
   }
 }
 const pureDatabase = new PureDatabase(pure);
+const re = data.filter(c => c.story_num.length !== 0 && c.story_num.startsWith('R'));
+const blank = data.filter(c => c.story_num.length === 0);
+
+//
+// simply find blank case's original
+//
+const re2 = [...re];
+for (const c of re2) {
+  c['story_num'] = c['story_num'].slice(1);
+}
+const appendRe2 = (c: Case, storyNum: string, title: string, isPureTitle = false) => {
+  const n = { ...c };
+  n['story_num'] = storyNum;
+  if (!isPureTitle) {
+    n['pureTitle'] = title;
+  }
+  re2.push(n);
+};
 const blank2 = blank.filter(
   c => !pureDatabase.find(c.title, (storyNum, title, isPureTitle) => appendRe2(c, storyNum, title, isPureTitle))
 );
@@ -179,10 +173,10 @@ const blank3 = blank2.filter(c => {
   return true;
 });
 const blank4 = blank3.filter(c => !c.title.includes('映画'));
-const magicKaito: Case[] = [];
-const specials: Case[] = [];
+const magicKaito: CaseBase[] = [];
+const specials: CaseBase[] = [];
 for (const c of blank4) {
-  const n = { ...c };
+  const n: CaseBase = { ...c };
   n['story_num'] = undefined;
   if (['まじっく快斗', '怪盗キッド'].some(k => c.title.includes(k)) || c.title === '聖夜（イブ）は恋するゲレンデで') {
     magicKaito.push(n);

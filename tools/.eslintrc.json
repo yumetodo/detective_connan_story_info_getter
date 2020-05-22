@@ -1,10 +1,8 @@
 {
   "extends": [
-    "eslint:recommended",
+    "plugin:prettier/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-
-    "plugin:prettier/recommended",
     "prettier/@typescript-eslint"
   ],
   "plugins": [
@@ -19,9 +17,35 @@
     "no-throw-literal": "error",
     "no-unused-expressions": "error",
     "curly": ["error", "multi-line"],
-    "@typescript-eslint/class-name-casing": "error",
+    "camelcase": "off",
     "@typescript-eslint/semi": "error",
-    "@typescript-eslint/camelcase": ["error", { "properties": "never" }],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "default",
+        "format": ["camelCase"]
+      },
+      {
+        "selector": "typeLike",
+        "format": ["PascalCase"]
+      },
+      {
+        "selector": "property",
+        "format": null
+      },
+      {
+        "selector": "variable",
+        "format": ["camelCase"],
+        "leadingUnderscore": "allow",
+        "trailingUnderscore": "allow"
+      },
+      {
+        "selector": "parameter",
+        "format": ["camelCase"],
+        "leadingUnderscore": "allow",
+        "trailingUnderscore": "allow"
+      }
+    ],
     "@typescript-eslint/explicit-function-return-type": "off",
     "eqeqeq": ["error", "always", {"null": "ignore"}],
     "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "_" }],
