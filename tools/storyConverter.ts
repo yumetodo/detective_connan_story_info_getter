@@ -1,19 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { CaseBase, Case, ReCase, PureDatabase } from '../lib/PureDabase';
 const resourcesPath = path.join(__dirname, '..', 'resources');
-interface CaseBase {
-  oaDateId: string;
-  title: string;
-  story_num?: string;
-  url: string;
-}
-interface Case extends CaseBase {
-  oaDateId: string;
-  title: string;
-  story_num: string;
-  url: string;
-  pureTitle?: string;
-}
 const data: Case[] = JSON.parse(fs.readFileSync(path.join(resourcesPath, 'story.json'), { encoding: 'utf-8' }))['item'];
 // fill missing story number
 {
@@ -32,76 +20,6 @@ const pure = data.filter(c => c.story_num.length !== 0 && !c.story_num.startsWit
 for (const c of pure) {
   c.title = c.title.replace(/(.+)\((.+)\)(.*)/, '$1（$2）$3');
 }
-class PureDatabase {
-  pure: Case[];
-  private titleMap: Map<string, number>;
-  constructor(pure: Case[]) {
-    this.pure = pure;
-    this.titleMap = new Map<string, number>();
-    let foundDuplicated = false;
-    pure.forEach((c, i) => {
-      if (this.titleMap.has(c.title)) {
-        foundDuplicated = true;
-        console.error(JSON.stringify(c));
-      }
-      this.titleMap.set(c.title, i);
-    });
-    if (foundDuplicated) {
-      throw new Error('PureDatabase: duplicated title detected');
-    }
-  }
-  get(title: string) {
-    const i = this.titleMap.get(title);
-    if (i == null) {
-      throw new Error('PureDatabase#get: not known such a titile');
-    }
-    return pure[i];
-  }
-  find(title: string, foundhandler: (storyNum: string, title: string, isPureTitle: boolean) => void) {
-    // just search by name
-    if (this.titleMap.has(title)) {
-      foundhandler(this.get(title)['story_num'], title, true);
-      return true;
-    }
-    // find "デジタルリマスター"
-    if (title.endsWith('デジタルリマスター')) {
-      const pureTitile = title.slice(0, -'デジタルリマスター'.length);
-      if (this.titleMap.has(pureTitile)) {
-        foundhandler(this.get(pureTitile)['story_num'], pureTitile, false);
-        return true;
-      }
-      return true;
-    }
-    const degitalReMasterSearchRegex = /(.+)[[（(［]デジタル *リマスター.*[）)\]］]$/;
-    {
-      const executed = degitalReMasterSearchRegex.exec(title);
-      if (executed != null && executed.length === 2) {
-        const pureTitile = executed[1].replace(/[ 〔（]+(.{1,2})編[〕） ]*$/, '（$1編）');
-        if (this.titleMap.has(pureTitile)) {
-          foundhandler(this.get(pureTitile)['story_num'], pureTitile, false);
-          return true;
-        }
-      }
-    }
-    // search by inner of bracket
-    const bracket = /「(.+)」/.exec(title);
-    if (bracket != null && bracket.length === 2) {
-      const maybePureTitile = bracket[1];
-      const executed = degitalReMasterSearchRegex.exec(maybePureTitile);
-      const pureTitile = executed != null && executed.length === 2 ? executed[1] : maybePureTitile;
-      if (this.titleMap.has(pureTitile)) {
-        foundhandler(this.get(pureTitile)['story_num'], pureTitile, false);
-        return true;
-      }
-      const matched = pure.filter(c => c.title.includes(pureTitile));
-      if (matched.length !== 0) {
-        foundhandler(matched[matched.length - 1]['story_num'], pureTitile, false);
-        return true;
-      }
-    }
-    return false;
-  }
-}
 const pureDatabase = new PureDatabase(pure);
 const re = data.filter(c => c.story_num.length !== 0 && c.story_num.startsWith('R'));
 const blank = data.filter(c => c.story_num.length === 0);
@@ -109,12 +27,12 @@ const blank = data.filter(c => c.story_num.length === 0);
 //
 // simply find blank case's original
 //
-const re2 = [...re];
+const re2: ReCase[] = [...re];
 for (const c of re2) {
   c['story_num'] = c['story_num'].slice(1);
 }
 const appendRe2 = (c: Case, storyNum: string, title: string, isPureTitle = false) => {
-  const n = { ...c };
+  const n: ReCase = { ...c };
   n['story_num'] = storyNum;
   if (!isPureTitle) {
     n['pureTitle'] = title;
