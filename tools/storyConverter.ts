@@ -29,7 +29,28 @@ const blank = data.filter(c => c.story_num.length === 0);
 //
 const re2: ReCase[] = [...re];
 for (const c of re2) {
-  c['story_num'] = c['story_num'].slice(1);
+  const er = pureDatabase.find(c.title, (storyNum, title, isPureTitle) => {
+    c.story_num = storyNum;
+    if (!isPureTitle) {
+      c.pureTitle = title;
+    }
+  });
+  if (!er) {
+    if (c.title.startsWith('集められた名探偵')) {
+      const pureTitile = '集められた名探偵！工藤新一ＶＳ怪盗キッド';
+      c.story_num = pureDatabase.get(pureTitile).story_num;
+      c.pureTitle = pureTitile;
+      continue;
+    }
+    const m = /^容疑者毛利小五郎（(.+)編）（デジタルリマスター）$/.exec(c.title);
+    if (m != null && m.length === 2) {
+      const pureTitile = `容疑者・毛利小五郎（${m[1]}編）`;
+      c.story_num = pureDatabase.get(pureTitile).story_num;
+      c.pureTitle = pureTitile;
+      continue;
+    }
+    throw new Error(`story.json is broken: c=${JSON.stringify(c)}`);
+  }
 }
 const appendRe2 = (c: Case, storyNum: string, title: string, isPureTitle = false) => {
   const n: ReCase = { ...c };
