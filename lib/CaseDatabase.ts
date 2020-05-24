@@ -1,7 +1,7 @@
 'use strict';
 import { hasProperty, isArray } from './util';
 import * as PureDatabase from './PureDabase';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 interface RawCaseData {
   oa_date: string;
@@ -57,7 +57,7 @@ const parseLocal = (data: unknown): LocalResult => {
       throw new Error('input data is broken.');
     }
     return {
-      oaDate: moment(c.oaDateId),
+      oaDate: moment(c.oaDateId).tz('Asia/Tokyo'),
       title: c.title,
       story_num: c.story_num,
     };
@@ -67,7 +67,7 @@ const parseLocal = (data: unknown): LocalResult => {
       throw new Error('input data is broken.');
     }
     return {
-      oaDate: moment(c.oaDateId),
+      oaDate: moment(c.oaDateId).tz('Asia/Tokyo'),
       title: c.title,
       story_num: c.story_num,
       pureTitle: c.pureTitle,
@@ -78,7 +78,7 @@ const parseLocal = (data: unknown): LocalResult => {
       throw new Error('input data is broken.');
     }
     return {
-      oaDate: moment(c.oaDateId),
+      oaDate: moment(c.oaDateId).tz('Asia/Tokyo'),
       title: c.title,
     };
   });
@@ -87,7 +87,7 @@ const parseLocal = (data: unknown): LocalResult => {
       throw new Error('input data is broken.');
     }
     return {
-      oaDate: moment(c.oaDateId),
+      oaDate: moment(c.oaDateId).tz('Asia/Tokyo'),
       title: c.title,
     };
   });
@@ -112,13 +112,13 @@ const parseRemote = (data: unknown): [Case[], ReCase[]] => {
     }
     if (c.data.episode.startsWith('R')) {
       re.push({
-        oaDate: moment(c.data.oa_date),
+        oaDate: moment(c.data.oa_date).tz('Asia/Tokyo'),
         title: c.data.title,
         story_num: c.data.episode,
       });
     } else {
       pure.push({
-        oaDate: moment(c.data.oa_date),
+        oaDate: moment(c.data.oa_date).tz('Asia/Tokyo'),
         title: c.data.title,
         story_num: c.data.episode,
       });
