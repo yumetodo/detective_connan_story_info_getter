@@ -15,7 +15,7 @@ interface RawCase {
 function isRawCase(i: unknown): i is RawCase {
   return (
     hasProperty(i, 'delete_flag', 'data') &&
-    i.delete_flag !== 0 &&
+    typeof i.delete_flag === 'number' &&
     hasProperty(i.data, 'oa_date', 'title', 'episode') &&
     i.data != null &&
     typeof i.data.oa_date === 'string' &&
