@@ -9,7 +9,7 @@ interface RawCaseData {
   episode: string;
 }
 interface RawCase {
-  elete_flag: number;
+  delete_flag: number;
   data: RawCaseData;
 }
 function isRawCase(i: unknown): i is RawCase {
