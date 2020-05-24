@@ -119,3 +119,4 @@ dist
 resources/*
 !resources/story.json
 tools/*.js
+results/
