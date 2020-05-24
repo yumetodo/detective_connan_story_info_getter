@@ -36,24 +36,31 @@ for (const c of re2) {
     }
   });
   if (!er) {
+    const insert = (pureTitle: string) => {
+      const n = pureDatabase.getStoryNum(pureTitle);
+      if (n == null) {
+        throw new Error('logic error detected.');
+      }
+      c.story_num = n;
+      c.pureTitle = pureTitle;
+    };
     if (c.title.startsWith('集められた名探偵')) {
-      const pureTitile = '集められた名探偵！工藤新一ＶＳ怪盗キッド';
-      c.story_num = pureDatabase.get(pureTitile).story_num;
-      c.pureTitle = pureTitile;
+      insert('集められた名探偵！工藤新一ＶＳ怪盗キッド');
       continue;
     }
     const m = /^容疑者毛利小五郎（(.+)編）（デジタルリマスター）$/.exec(c.title);
     if (m != null && m.length === 2) {
-      const pureTitile = `容疑者・毛利小五郎（${m[1]}編）`;
-      c.story_num = pureDatabase.get(pureTitile).story_num;
-      c.pureTitle = pureTitile;
+      insert(`容疑者・毛利小五郎（${m[1]}編）`);
       continue;
     }
     throw new Error(`story.json is broken: c=${JSON.stringify(c)}`);
   }
 }
-const appendRe2 = (c: Case, storyNum: string, title: string, isPureTitle = false) => {
+const appendRe2 = (c: Case, storyNum: string | undefined, title: string, isPureTitle = false) => {
   const n: ReCase = { ...c };
+  if (storyNum == null) {
+    throw new Error('logic error detected.');
+  }
   n['story_num'] = storyNum;
   if (!isPureTitle) {
     n['pureTitle'] = title;
@@ -74,7 +81,7 @@ const blank3 = blank2.filter(c => {
       /闇の男爵殺人事件・(.+)編\(デジタルリマスター\)/,
       '闇の男爵（ﾅｲﾄﾊﾞﾛﾝ）殺人事件（$1篇）'
     );
-    appendRe2(c, pureDatabase.get(pureTitile)['story_num'], pureTitile);
+    appendRe2(c, pureDatabase.getStoryNum(pureTitile), pureTitile);
     return false;
   }
   if (title.startsWith('園子のアブナイ夏物語')) {
@@ -82,7 +89,7 @@ const blank3 = blank2.filter(c => {
       /園子のアブナイ夏物語（(.+)編）\(デジタル・*リマスター\)/,
       '園子のアブない夏物語（$1編）'
     );
-    appendRe2(c, pureDatabase.get(pureTitile)['story_num'], pureTitile);
+    appendRe2(c, pureDatabase.getStoryNum(pureTitile), pureTitile);
     return false;
   }
   const replaceList = [
@@ -105,7 +112,7 @@ const blank3 = blank2.filter(c => {
   ];
   for (const [s, pureTitile] of replaceList) {
     if (s === title) {
-      appendRe2(c, pureDatabase.get(pureTitile)['story_num'], pureTitile);
+      appendRe2(c, pureDatabase.getStoryNum(pureTitile), pureTitile);
       return false;
     }
   }

@@ -48,24 +48,33 @@ export class PureDatabase<CaseType extends HasTitileAndStoryNum> {
       throw new Error('PureDatabase: duplicated title detected');
     }
   }
-  get(title: string): CaseType {
+  get(title: string): CaseType | undefined {
     const i = this.titleMap_.get(title);
     if (i == null) {
-      throw new Error('PureDatabase#get: not known such a titile');
+      return undefined;
     }
     return this.pure[i];
   }
+  getStoryNum(title: string): string | undefined {
+    const c = this.get(title);
+    if (c == null) {
+      return undefined;
+    }
+    return c.story_num;
+  }
   find(title: string, foundhandler: (storyNum: string, title: string, isPureTitle: boolean) => void): boolean {
     // just search by name
-    if (this.titleMap_.has(title)) {
-      foundhandler(this.get(title)['story_num'], title, true);
+    const storyNum = this.getStoryNum(title);
+    if (storyNum != null) {
+      foundhandler(storyNum, title, true);
       return true;
     }
     // find "デジタルリマスター"
     if (title.endsWith('デジタルリマスター')) {
       const pureTitile = title.slice(0, -'デジタルリマスター'.length);
-      if (this.titleMap_.has(pureTitile)) {
-        foundhandler(this.get(pureTitile)['story_num'], pureTitile, false);
+      const storyNum = this.getStoryNum(pureTitile);
+      if (storyNum != null) {
+        foundhandler(storyNum, pureTitile, false);
         return true;
       }
       return true;
@@ -75,8 +84,9 @@ export class PureDatabase<CaseType extends HasTitileAndStoryNum> {
       const executed = degitalReMasterSearchRegex.exec(title);
       if (executed != null && executed.length === 2) {
         const pureTitile = executed[1].replace(/[ 〔（]+(.{1,2})編[〕） ]*$/, '（$1編）');
-        if (this.titleMap_.has(pureTitile)) {
-          foundhandler(this.get(pureTitile)['story_num'], pureTitile, false);
+        const storyNum = this.getStoryNum(pureTitile);
+        if (storyNum != null) {
+          foundhandler(storyNum, pureTitile, false);
           return true;
         }
       }
@@ -87,8 +97,9 @@ export class PureDatabase<CaseType extends HasTitileAndStoryNum> {
       const maybePureTitile = bracket[1];
       const executed = degitalReMasterSearchRegex.exec(maybePureTitile);
       const pureTitile = executed != null && executed.length === 2 ? executed[1] : maybePureTitile;
-      if (this.titleMap_.has(pureTitile)) {
-        foundhandler(this.get(pureTitile)['story_num'], pureTitile, false);
+      const storyNum = this.getStoryNum(pureTitile);
+      if (storyNum != null) {
+        foundhandler(storyNum, pureTitile, false);
         return true;
       }
       const matched = this.pure.filter(c => c.title.includes(pureTitile));
