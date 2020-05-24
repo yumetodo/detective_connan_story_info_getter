@@ -221,7 +221,7 @@ export class CaseDatabase {
     ).sort(caseBaseCompare);
   }
   findByDate(date: moment.Moment): CaseBase | Case | ReCase | null {
-    const cond = <C extends CaseBase>(c: C) => c.oaDate.isSame(date);
+    const cond = <C extends CaseBase>(c: C) => c.oaDate.isSame(date, 'day');
     const checkLen = <T>(c: T[]) => {
       if (c.length !== 0) {
         throw new Error('CaseDatabase#findByDate: database is broken');
