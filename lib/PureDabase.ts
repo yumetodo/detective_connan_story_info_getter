@@ -13,9 +13,10 @@ export interface CaseBase {
 }
 export function isCaseBase(c: unknown): c is CaseBase {
   return (
-    hasProperty(c, 'oaDateId', 'title') &&
+    hasProperty(c, 'oaDateId', 'title', 'url') &&
     typeof c.oaDateId === 'string' &&
     typeof c.title === 'string' &&
+    typeof c.url === 'string' &&
     (!hasProperty(c, 'story_num') || typeof c.story_num === 'string')
   );
 }
