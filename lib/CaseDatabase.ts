@@ -23,6 +23,26 @@ function isRawCase(i: unknown): i is RawCase {
     typeof i.data.episode === 'string'
   );
 }
+function investigateWhyIsNotRawCase(i: unknown): string {
+  const re: string[] = [];
+  if (!hasProperty(i, 'delete_flag')) {
+    re.push('Propaty of "delete_flag" is undefined');
+  }
+  if (!hasProperty(i, 'data')) {
+    re.push('Propaty of "data" is undefined');
+  } else {
+    if (!hasProperty(i.data, 'oa_date')) {
+      re.push('Propaty of "data.oa_date" is undefined');
+    }
+    if (!hasProperty(i.data, 'title')) {
+      re.push('Propaty of "data.title" is undefined');
+    }
+    if (!hasProperty(i.data, 'episode')) {
+      re.push('Propaty of "data.episode" is undefined');
+    }
+  }
+  return re.join('\n');
+}
 export interface CaseBase {
   oaDate: moment.Moment;
   title: string;
@@ -108,7 +128,12 @@ const parseRemote = (data: unknown): [Case[], ReCase[]] => {
   const re: ReCase[] = [];
   for (const c of data) {
     if (!isRawCase(c)) {
-      throw new Error('iligal case.json spec detected.');
+      throw new Error(
+        'iligal case.json spec detected.\n' +
+          `reason: ${investigateWhyIsNotRawCase(c)}` +
+          '\n' +
+          `c=${JSON.stringify(c)}`
+      );
     }
     if (c.data.episode.startsWith('R')) {
       re.push({
