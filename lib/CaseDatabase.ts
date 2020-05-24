@@ -172,6 +172,7 @@ export class CaseDatabase {
     this.pureDB_ = new PureDatabase.PureDatabase(pure);
     this.specials_ = local.specials;
     this.magicKaito_ = local.magicKaito;
+    const iligal: ReCase[] = [];
     for (const c of re) {
       const er = this.pureDB_.find(replaceOrDefault(c.title), (storyNum, title, isPureTitle) => {
         c.story_num = storyNum;
@@ -180,8 +181,15 @@ export class CaseDatabase {
         }
       });
       if (!er) {
-        throw new Error(`CaseDatabase#constructor: iligal case.json spec detected. c=${c}`);
+        iligal.push(c);
       }
+    }
+    if (iligal.length !== 0) {
+      throw new Error(
+        'CaseDatabase#constructor: iligal case.json spec detected.\n' +
+          'Please report to https://github.com/yumetodo/detective_connan_story_info_getter/issues \n' +
+          JSON.stringify(iligal, null, 4)
+      );
     }
     push_.apply(re, local.re);
     this.re_ = re;
