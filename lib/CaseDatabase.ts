@@ -154,6 +154,8 @@ const parseRemote = (data: unknown): [Case[], ReCase[]] => {
 const findByDateRange = <C extends CaseBase>(target: C[], before: moment.Moment, after: moment.Moment) =>
   target.filter(c => c.oaDate.isBetween(before, after, null, '[]')).reverse();
 const push_ = Array.prototype.push;
+const replaceMap = new Map([['大捜索 ９つのドア', '大捜索九つのドア']]);
+const replaceOrDefault = (titile: string) => replaceMap.get(titile) || titile;
 export class CaseDatabase {
   private pure_: Case[];
   private pureDB_: PureDatabase.PureDatabase<Case>;
@@ -171,7 +173,7 @@ export class CaseDatabase {
     this.specials_ = local.specials;
     this.magicKaito_ = local.magicKaito;
     for (const c of re) {
-      const er = this.pureDB_.find(c.title, (storyNum, title, isPureTitle) => {
+      const er = this.pureDB_.find(replaceOrDefault(c.title), (storyNum, title, isPureTitle) => {
         c.story_num = storyNum;
         if (!isPureTitle) {
           c.pureTitle = title;
