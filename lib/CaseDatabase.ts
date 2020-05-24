@@ -135,6 +135,7 @@ const parseRemote = (data: unknown): [Case[], ReCase[]] => {
           `c=${JSON.stringify(c)}`
       );
     }
+    if (c.delete_flag !== 0) continue;
     if (c.data.episode.startsWith('R')) {
       re.push({
         oaDate: moment(c.data.oa_date).tz('Asia/Tokyo'),
