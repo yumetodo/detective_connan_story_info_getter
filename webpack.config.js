@@ -9,6 +9,7 @@
 module.exports = (env, argv) => ({
   entry: {
     'tools/storyConverter': './tools/storyConverter.ts',
+    'lib/CaseDatabase': './lib/CaseDatabase.ts',
   },
   devtool: argv.mode === 'development' ? 'inline-source-map' : 'source-map',
   target: 'node',
@@ -26,5 +27,8 @@ module.exports = (env, argv) => ({
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+  },
+  externals: {
+    'moment-timezone': 'moment-timezone',
   },
 });
