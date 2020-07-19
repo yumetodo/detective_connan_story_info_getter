@@ -1,5 +1,7 @@
 ﻿# detective_connan_story_info_getter
 
+![Node CI](https://github.com/yumetodo/detective_connan_story_info_getter/workflows/Node%20CI/badge.svg?branch=master)
+
 アニメ名探偵コナンの放送話を検索して列挙するコマンドです。
 
 [ytv(読売テレビ)のデータ(json形式)](http://www.ytv.co.jp/conan/data/story.json)をそのままパースして検索します。
