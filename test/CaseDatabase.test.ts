@@ -5,7 +5,7 @@ import * as path from 'path';
 import moment from 'moment-timezone';
 import fetch from 'node-fetch';
 const readFileAsync = promisify(readFile);
-const endOfSearchDay = moment('2020-05-24T10:00:00+09:00').tz('Asia/Tokyo');
+const endOfSearchDay = moment('2020-07-19T10:00:00+09:00').tz('Asia/Tokyo');
 let db: CaseDatabase | undefined;
 describe('CaseDatabase', () => {
   beforeAll(async () => {
