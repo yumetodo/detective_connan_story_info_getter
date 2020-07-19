@@ -21,6 +21,8 @@ OPERATIONS
         search by range of dates
     Titile <title>
         search by submuch of story title.
+    -h, --help
+        print help
 OPTIONS
     --json
         output as json
@@ -65,13 +67,17 @@ function parseOptions(argv: string[], start: number): Options {
   }
   return re;
 }
-export function parseCommandLine(argv: string[]): OperatorAndOptions | undefined {
+export function parseCommandLine(argv: string[]): OperatorAndOptions | null | undefined {
   switch (argv.length) {
     case 0:
     case 1:
       console.error('too few arguments', help);
       return;
     case 2:
+      if (['-h', '--help'].includes(argv[1])) {
+        console.error(help);
+        return null;
+      }
       console.error('missing paramater', help);
       return;
     default:
