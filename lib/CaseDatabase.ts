@@ -140,6 +140,7 @@ const parseRemote = (data: unknown): [Case[], ReCase[]] => {
       re.push({
         oaDate: moment(c.data.oa_date).tz('Asia/Tokyo'),
         title: c.data.title,
+        // c.data.episode is unreliable so that we don't have to remove 'R' prefix.
         story_num: c.data.episode,
       });
     } else {
