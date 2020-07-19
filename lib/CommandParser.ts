@@ -30,7 +30,7 @@ OPTIONS
         timezone to paesr date. deafult is "Asia/Tokyo". Timezone identifier is listed below:
         https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 EXAMPLES
-    npx detective_connan_story_info_getter StoryNum 231
+    npx detective_connan_story_info_getter storyNum 231
     npx detective_connan_story_info_getter date 20191123 --tz Asia/Tokyo
     npx detective_connan_story_info_getter dateRange 20191123 "2020-01-04 18:00:00"
     npx detective_connan_story_info_getter titile "ジェットコースター殺人事件" --json
