@@ -4,19 +4,16 @@
 
 アニメ名探偵コナンの放送話を検索して列挙するコマンドです。
 
-[ytv(読売テレビ)のデータ(json形式)](http://www.ytv.co.jp/conan/data/story.json)をそのままパースして検索します。
+ytv(読売テレビ)のデータは[古いもの(json形式)](http://www.ytv.co.jp/conan/data/story.json)と[新しいもの(json形式)](https://www.ytv.co.jp/conan/data/case.json)がありますが、この両方を使い、さらに元データの誤りを修復して、検索をします。
 
-まれにこのデータ自体が間違っているようですが、補正はしていません。
-
-(ホームズ・フリーク殺人事件の放送話数、デジタルリマスターのときに間違ってねーか？)
-
-出力はカンマ区切りです。もし放送タイトルにカンマが含まれることがあった場合は壊れます(ないでしょ。
+出力はカンマ区切りです。もし放送タイトルにカンマが含まれることがあった場合は壊れます(ないでしょ。もしくは`--json`を末尾に渡してあげることでjsonとして出力します。
 
 導入は以下の手順で可能です。
 
 ```plain
 git clone https://github.com/yumetodo/detective_connan_story_info_getter.git
 npm ci
+npm run ci
 npm link
 ```
 
