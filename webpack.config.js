@@ -29,6 +29,6 @@ module.exports = (env, argv) => ({
     extensions: ['.tsx', '.ts', '.js'],
   },
   externals: {
-    'moment-timezone': 'moment-timezone',
+    'moment-timezone': 'require("moment-timezone")',
   },
 });
