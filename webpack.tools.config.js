@@ -1,5 +1,4 @@
 // @ts-check
-const webpack = require('webpack');
 /**
  * @param {Object} env
  * @param {boolean} env.production
@@ -9,7 +8,7 @@ const webpack = require('webpack');
  */
 module.exports = (env, argv) => ({
   entry: {
-    'bin/main': './bin/main.ts',
+    'tools/storyConverter': './tools/storyConverter.ts',
   },
   devtool: argv.mode === 'development' ? 'inline-source-map' : 'source-map',
   target: 'node',
@@ -20,7 +19,7 @@ module.exports = (env, argv) => ({
     rules: [
       {
         test: /\.ts$/,
-        use: ['ts-loader'],
+        use: ['ts-loader?configFile=tools.tsconfig.json'],
         exclude: /node_modules/,
       },
     ],
@@ -28,7 +27,6 @@ module.exports = (env, argv) => ({
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
-  plugins: [new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true })],
   externals: {
     'moment-timezone': 'require("moment-timezone")',
   },
