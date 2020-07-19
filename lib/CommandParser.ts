@@ -27,7 +27,7 @@ OPTIONS
     --json
         output as json
     --tz <timezone>
-        timezone to paesr date. timezone identifier is listed below:
+        timezone to paesr date. deafult is "Asia/Tokyo". Timezone identifier is listed below:
         https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 EXAMPLES
     npx detective_connan_story_info_getter StoryNum 231
