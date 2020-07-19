@@ -39,10 +39,10 @@ describe('CaseDatabase', () => {
       ).toHaveLength(7);
     }
   });
-  it('findByTitile', () => {
+  it('findByTitle', () => {
     expect(db).not.toBeUndefined();
     if (db) {
-      expect(db.findByTitile('ジェットコースター殺人事件')).toHaveLength(2);
+      expect(db.findByTitle('ジェットコースター殺人事件')).toHaveLength(2);
     }
   });
 });

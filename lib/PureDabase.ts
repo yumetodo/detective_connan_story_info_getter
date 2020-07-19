@@ -1,8 +1,8 @@
 import { hasProperty } from './util';
-export interface HasTitile {
+export interface HasTitle {
   title: string;
 }
-export interface HasTitileAndStoryNum extends HasTitile {
+export interface HasTitleAndStoryNum extends HasTitle {
   story_num: string;
 }
 export interface CaseBase {
@@ -32,7 +32,7 @@ export interface ReCase extends Case {
 export function isReCase(c: unknown): c is ReCase {
   return isCase(c) && (!hasProperty(c, 'pureTitle') || typeof c.pureTitle === 'string');
 }
-export class PureDatabase<CaseType extends HasTitileAndStoryNum> {
+export class PureDatabase<CaseType extends HasTitleAndStoryNum> {
   pure: CaseType[];
   private titleMap_ = new Map<string, number>();
   constructor(pure: CaseType[]) {
@@ -72,10 +72,10 @@ export class PureDatabase<CaseType extends HasTitileAndStoryNum> {
     }
     // find "デジタルリマスター"
     if (title.endsWith('デジタルリマスター')) {
-      const pureTitile = title.slice(0, -'デジタルリマスター'.length);
-      const storyNum = this.getStoryNum(pureTitile);
+      const pureTitle = title.slice(0, -'デジタルリマスター'.length);
+      const storyNum = this.getStoryNum(pureTitle);
       if (storyNum != null) {
-        foundhandler(storyNum, pureTitile, false);
+        foundhandler(storyNum, pureTitle, false);
         return true;
       }
       return true;
@@ -84,10 +84,10 @@ export class PureDatabase<CaseType extends HasTitileAndStoryNum> {
     {
       const executed = degitalReMasterSearchRegex.exec(title);
       if (executed != null && executed.length === 2) {
-        const pureTitile = executed[1].replace(/[ 〔（]+(.{1,2})編[〕） ]*$/, '（$1編）');
-        const storyNum = this.getStoryNum(pureTitile);
+        const pureTitle = executed[1].replace(/[ 〔（]+(.{1,2})編[〕） ]*$/, '（$1編）');
+        const storyNum = this.getStoryNum(pureTitle);
         if (storyNum != null) {
-          foundhandler(storyNum, pureTitile, false);
+          foundhandler(storyNum, pureTitle, false);
           return true;
         }
       }
@@ -95,17 +95,17 @@ export class PureDatabase<CaseType extends HasTitileAndStoryNum> {
     // search by inner of bracket
     const bracket = /「(.+)」/.exec(title);
     if (bracket != null && bracket.length === 2) {
-      const maybePureTitile = bracket[1];
-      const executed = degitalReMasterSearchRegex.exec(maybePureTitile);
-      const pureTitile = executed != null && executed.length === 2 ? executed[1] : maybePureTitile;
-      const storyNum = this.getStoryNum(pureTitile);
+      const maybePureTitle = bracket[1];
+      const executed = degitalReMasterSearchRegex.exec(maybePureTitle);
+      const pureTitle = executed != null && executed.length === 2 ? executed[1] : maybePureTitle;
+      const storyNum = this.getStoryNum(pureTitle);
       if (storyNum != null) {
-        foundhandler(storyNum, pureTitile, false);
+        foundhandler(storyNum, pureTitle, false);
         return true;
       }
-      const matched = this.pure.filter(c => c.title.includes(pureTitile));
+      const matched = this.pure.filter(c => c.title.includes(pureTitle));
       if (matched.length !== 0) {
-        foundhandler(matched[matched.length - 1]['story_num'], pureTitile, false);
+        foundhandler(matched[matched.length - 1]['story_num'], pureTitle, false);
         return true;
       }
     }

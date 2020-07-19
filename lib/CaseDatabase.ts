@@ -157,7 +157,7 @@ const findByDateRange = <C extends CaseBase>(target: C[], before: moment.Moment,
   target.filter(c => c.oaDate.isBetween(before, after, null, '[]')).reverse();
 const push_ = Array.prototype.push;
 const replaceMap = new Map([['大捜索 ９つのドア', '大捜索九つのドア']]);
-const replaceOrDefault = (titile: string) => replaceMap.get(titile) || titile;
+const replaceOrDefault = (title: string) => replaceMap.get(title) || title;
 export class CaseDatabase {
   private pure_: Case[];
   private pureDB_: PureDatabase.PureDatabase<Case>;
@@ -247,7 +247,7 @@ export class CaseDatabase {
     const i = this.pureStoryNumIndex_.get(n);
     return i == null ? [] : this.findByStoryNumimpl(n, this.pure_[i]);
   }
-  findByTitile(k: string): (CaseBase | Case | ReCase)[] {
+  findByTitle(k: string): (CaseBase | Case | ReCase)[] {
     const re: (CaseBase | Case | ReCase)[] = [];
     const cond = <C extends CaseBase>(c: C) => c.title.includes(k);
     for (const target of [this.pure_, this.re_, this.specials_, this.magicKaito_]) {

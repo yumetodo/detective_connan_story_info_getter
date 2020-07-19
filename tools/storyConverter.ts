@@ -77,19 +77,19 @@ const blank3 = blank2.filter(c => {
     return false;
   }
   if (title.startsWith('闇の男爵殺人事件')) {
-    const pureTitile = title.replace(
+    const pureTitle = title.replace(
       /闇の男爵殺人事件・(.+)編\(デジタルリマスター\)/,
       '闇の男爵（ﾅｲﾄﾊﾞﾛﾝ）殺人事件（$1篇）'
     );
-    appendRe2(c, pureDatabase.getStoryNum(pureTitile), pureTitile);
+    appendRe2(c, pureDatabase.getStoryNum(pureTitle), pureTitle);
     return false;
   }
   if (title.startsWith('園子のアブナイ夏物語')) {
-    const pureTitile = title.replace(
+    const pureTitle = title.replace(
       /園子のアブナイ夏物語（(.+)編）\(デジタル・*リマスター\)/,
       '園子のアブない夏物語（$1編）'
     );
-    appendRe2(c, pureDatabase.getStoryNum(pureTitile), pureTitile);
+    appendRe2(c, pureDatabase.getStoryNum(pureTitle), pureTitle);
     return false;
   }
   const replaceList = [
@@ -110,9 +110,9 @@ const blank3 = blank2.filter(c => {
     ['1時間スペシャル（デジタルリマスター版）「迷宮への入り口 巨大神像の怒り」', '迷宮への入口　巨大神像の怒り'],
     ['怪盗キッドの驚異空中歩行', '怪盗キッドの驚異空中歩行」1時間スペシャル】'],
   ];
-  for (const [s, pureTitile] of replaceList) {
+  for (const [s, pureTitle] of replaceList) {
     if (s === title) {
-      appendRe2(c, pureDatabase.getStoryNum(pureTitile), pureTitile);
+      appendRe2(c, pureDatabase.getStoryNum(pureTitle), pureTitle);
       return false;
     }
   }

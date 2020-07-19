@@ -19,7 +19,7 @@ OPERATIONS
         https://momentjs.com/docs/#/parsing/string/
     DateRange <first date> <last date>
         search by range of dates
-    Titile <title>
+    Title <title>
         search by submuch of story title.
     -h, --help
         print help
@@ -33,13 +33,13 @@ EXAMPLES
     npx detective_connan_story_info_getter storyNum 231
     npx detective_connan_story_info_getter date 20191123 --tz Asia/Tokyo
     npx detective_connan_story_info_getter dateRange 20191123 "2020-01-04 18:00:00"
-    npx detective_connan_story_info_getter titile "ジェットコースター殺人事件" --json
+    npx detective_connan_story_info_getter title "ジェットコースター殺人事件" --json
 BUGS
     https://github.com/yumetodo/detective_connan_story_info_getter/issues
 AUTHORS
     yumetodo <yume-wikijp@live.jp>
 `;
-const request1ParamList = ['storyNum', 'date', 'titile'];
+const request1ParamList = ['storyNum', 'date', 'title'];
 const request2ParamList = ['dateRange'];
 interface Options {
   tz?: string;

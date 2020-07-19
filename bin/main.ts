@@ -58,8 +58,8 @@ const main = async () => {
       }
       break;
     }
-    case 'titile': {
-      const re = db.findByTitile(options.params[0]);
+    case 'title': {
+      const re = db.findByTitle(options.params[0]);
       if (!options.asJson) {
         re.forEach((v, i) => {
           if ('story_num' in v) {
