@@ -21,6 +21,7 @@ describe('CaseDatabase', () => {
     expect(db).not.toBeUndefined();
     if (db) {
       expect(db.findByStoryNum('1').filter(c => c.oaDate.isBefore(endOfSearchDay))).toHaveLength(2);
+      expect(db.findByStoryNum('105').filter(c => c.oaDate.isBefore(endOfSearchDay))).toHaveLength(2);
       expect(db.findByStoryNum('974').filter(c => c.oaDate.isBefore(endOfSearchDay))).toHaveLength(1);
     }
   });
