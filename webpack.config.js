@@ -1,4 +1,5 @@
 // @ts-check
+const webpack = require('webpack');
 /**
  * @param {Object} env
  * @param {boolean} env.production
@@ -28,6 +29,7 @@ module.exports = (env, argv) => ({
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
+  plugins: [new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true })],
   externals: {
     'moment-timezone': 'require("moment-timezone")',
   },
