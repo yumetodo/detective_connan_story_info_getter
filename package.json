@@ -17,13 +17,10 @@
   "author": "yumetodo",
   "license": "BSL-1.0",
   "dependencies": {
-    "form-data": "^3.0.0",
-    "moment": "^2.27.0",
-    "moment-timezone": "^0.5.31",
-    "node-fetch": "^2.6.0"
+    "moment-timezone": "^0.5.31"
   },
   "devDependencies": {
-    "@types/form-data": "^2.5.0",
+    "node-fetch": "^2.6.0",
     "@types/jest": "^26.0.5",
     "@types/node": "^14.0.23",
     "@types/node-fetch": "^2.5.7",
