@@ -21,7 +21,7 @@ npm link
 ## 放送日の範囲で検索
 
 ```sh
-detective_connan_story_info_getter <開始日> <終了日>
+detective_connan_story_info_getter dateRange <開始日> <終了日>
 ```
 
 開始日、終了日の文字列の形式は、Moment.jsのドキュメントを参照してください。
@@ -29,7 +29,7 @@ detective_connan_story_info_getter <開始日> <終了日>
 [Moment.js | Docs](https://momentjs.com/docs/#/parsing/string/)
 
 ``` plain
-$ detective_connan_story_info_getter 20180721 20181103
+$ detective_connan_story_info_getter dateRange 20180721 20181103
 1,名探偵コナン第908話,川床に流れた友情,2018/7/21
 2,名探偵コナン第909話,燃えるテントの怪（前編）,2018/7/28
 3,名探偵コナン第910話,燃えるテントの怪（後編）,2018/8/4
@@ -50,7 +50,7 @@ $ detective_connan_story_info_getter 20180721 20181103
 ## 放送日で検索
 
 ```sh
-detective_connan_story_info_getter <放送日>
+detective_connan_story_info_getter date <放送日>
 ```
 
 放送日の文字列の形式は、Moment.jsのドキュメントを参照してください。
@@ -58,20 +58,20 @@ detective_connan_story_info_getter <放送日>
 [Moment.js | Docs](https://momentjs.com/docs/#/parsing/string/)
 
 ```plain
-$ detective_connan_story_info_getter 20180721
+$ detective_connan_story_info_getter date 20180721
 1,名探偵コナン第908話,川床に流れた友情,2018/7/21
 ```
 
 ## キーワードで検索
 
 ```sh
-detective_connan_story_info_getter <部分一致文字列>
+detective_connan_story_info_getter title <部分一致文字列>
 ```
 
 アニメの各話のタイトルに対して部分一致検索をし、該当する放送すべてを列挙します。
 
 ```plain
-$ detective_connan_story_info_getter ホームズ
+$ detective_connan_story_info_getter title ホームズ
 1,名探偵コナン第57話,ホームズ・フリーク殺人事件(前編),1997/5/5
 2,名探偵コナン第58話,ホームズ・フリーク殺人事件(後編),1997/5/12
 3,名探偵コナン第616話,ホームズの黙示録（名探偵の弟子）,2011/5/21
@@ -87,15 +87,15 @@ $ detective_connan_story_info_getter ホームズ
 ## 放送話番号で検索
 
 ```sh
-detective_connan_story_info_getter <放送話番号>
+detective_connan_story_info_getter storyNum <放送話番号>
 ```
 
 放送話番号は正の整数のみで入力してください。
 
-ytv(読売テレビ)のデータがまれに間違っていますが、特に補正はしていません。
+ytv(読売テレビ)の元データは特に再放送のものについてしばしば間違っており、手動で補正しています。補正漏れを見つけた場合はIssueに報告してください。
 
 ```plain
-$detective_connan_story_info_getter 78
+$detective_connan_story_info_getter storyNum 78
 1,名探偵コナン第78話,名家連続変死事件（後編）,1997/10/27
 2,名探偵コナン第78話,ホームズ・フリーク殺人事件（後編）（デジタルリマスター）,2018/8/18
 ```

@@ -1,0 +1,71 @@
+{
+  "extends": [
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint"
+  ],
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "env": { "browser": true, "es6": true },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "settings": {
+    "node": {
+      "tryExtensions": [".ts", ".js", ".json", ".node"]
+    }
+  },
+  "rules": {
+    "no-throw-literal": "error",
+    "no-unused-expressions": "error",
+    "no-process-exit": "off",
+    "curly": ["error", "multi-line"],
+    "camelcase": "off",
+    "@typescript-eslint/semi": "error",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "default",
+        "format": ["camelCase"]
+      },
+      {
+        "selector": "typeLike",
+        "format": ["PascalCase"]
+      },
+      {
+        "selector": "property",
+        "format": null
+      },
+      {
+        "selector": "variable",
+        "format": ["camelCase"],
+        "leadingUnderscore": "allow",
+        "trailingUnderscore": "allow"
+      },
+      {
+        "selector": "parameter",
+        "format": ["camelCase"],
+        "leadingUnderscore": "allow",
+        "trailingUnderscore": "allow"
+      }
+    ],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "eqeqeq": ["error", "always", {"null": "ignore"}],
+    "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "_" }],
+    "no-constant-condition": ["error", { "checkLoops": false }],
+    "node/no-unpublished-import": "off",
+    " node/no-missing-import": "off",
+    "prettier/prettier": [
+      "error", {
+        "semi": true,
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "printWidth": 120,
+        "arrowParens": "avoid"
+      }
+    ]
+  }
+}

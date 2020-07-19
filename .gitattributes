@@ -1,2 +1,5 @@
 *           text=auto
 *.js        text eol=lf
+*.ts        text eol=lf
+.gitignore  text eol=lf
+.npmignore  text eol=lf

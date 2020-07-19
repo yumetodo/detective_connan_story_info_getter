@@ -33,7 +33,7 @@
                 "overrides": { "?": "before", ":": "before" }
             }
         ],
-        "quote-props": ["error", "always"],
+        "quote-props": "off",
         "no-useless-escape":"error",
         "camelcase":"error",
         "node/shebang": "error",

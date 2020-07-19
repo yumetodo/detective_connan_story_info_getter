@@ -116,7 +116,13 @@ dist
 *.code-workspace
 
 # Other
+bin/*
+dist/*
+!dist/bin/*
+lib/*
 resources/*
-!resources/story.json
-tools/*.js
-results/
+test/*
+tools/*
+webpack.config.js
+.eslintrc.json
+tsconfig.json
