@@ -7,9 +7,9 @@ DESCRIPTION
     detective_connan_story_info_getter is a non-official utility tools to
     get infromation about Great Detective Connan's animation story.
 OPERATIONS
-    StoryNum <number>
+    storyNum <number>
         search by story number.
-    Date <date>
+    date <date>
         search by the date broadcasted.
         ex.)
         - 20191123
@@ -17,9 +17,9 @@ OPERATIONS
 
         More information about date format, watch
         https://momentjs.com/docs/#/parsing/string/
-    DateRange <first date> <last date>
+    dateRange <first date> <last date>
         search by range of dates
-    Title <title>
+    title <title>
         search by submuch of story title.
     -h, --help
         print help
