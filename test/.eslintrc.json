@@ -55,6 +55,7 @@
     "eqeqeq": ["error", "always", {"null": "ignore"}],
     "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "_" }],
     "no-constant-condition": ["error", { "checkLoops": false }],
+    "node/no-unpublished-import": "off",
     "prettier/prettier": [
       "error", {
         "semi": true,
