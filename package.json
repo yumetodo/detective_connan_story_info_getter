@@ -1,6 +1,6 @@
 {
   "name": "detective_connan_story_info_getter",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
   "bin": {
     "detective_connan_story_info_getter": "dist/bin/main.js"
