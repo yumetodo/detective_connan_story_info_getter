@@ -12,8 +12,8 @@ BUGS
 AUTHORS
         yumetodo <yume-wikijp@live.jp>
 `;
-const request1ParamList = ['StoryNum', 'Date', 'Titile'];
-const request2ParamList = ['DateRange'];
+const request1ParamList = ['storyNum', 'date', 'titile'];
+const request2ParamList = ['dateRange'];
 interface Options {
   tz?: string;
   asJson: boolean;
