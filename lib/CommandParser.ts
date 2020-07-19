@@ -71,24 +71,25 @@ export function parseCommandLine(argv: string[]): OperatorAndOptions | null | un
   switch (argv.length) {
     case 0:
     case 1:
+    case 2:
       console.error('too few arguments', help);
       return;
-    case 2:
-      if (['-h', '--help'].includes(argv[1])) {
+    case 3:
+      if (['-h', '--help'].includes(argv[2])) {
         console.error(help);
         return null;
       }
-      console.error('missing paramater', help);
+      console.error('missing operator', help);
       return;
     default:
       try {
-        if (request1ParamList.includes(argv[1])) {
-          return { ...parseOptions(argv, 3), operator: argv[1], params: [argv[2]] };
-        } else if (request2ParamList.includes(argv[1])) {
+        if (request1ParamList.includes(argv[2])) {
+          return { ...parseOptions(argv, 4), operator: argv[2], params: [argv[3]] };
+        } else if (request2ParamList.includes(argv[2])) {
           if (argv.length < 4) {
             throw new Error('missing paramater');
           }
-          return { ...parseOptions(argv, 4), operator: argv[1], params: [argv[2], argv[3]] };
+          return { ...parseOptions(argv, 5), operator: argv[2], params: [argv[3], argv[4]] };
         } else {
           throw new Error('unknown operator');
         }
