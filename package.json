@@ -1,7 +1,11 @@
 {
   "name": "detective_connan_story_info_getter",
   "version": "2.0.0",
-  "description": "",
+  "description": "Search animme detective connan story",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yumetodo/detective_connan_story_info_getter.git/"
+  },
   "bin": {
     "detective_connan_story_info_getter": "dist/bin/main.js"
   },
