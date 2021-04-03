@@ -4,7 +4,7 @@
   "description": "Search animme detective connan story",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yumetodo/detective_connan_story_info_getter.git/"
+    "url": "https://github.com/yumetodo/detective_connan_story_info_getter.git"
   },
   "bin": {
     "detective_connan_story_info_getter": "dist/bin/main.js"
@@ -17,13 +17,13 @@
     "eslint": "eslint . --cache",
     "eslint:fix": "eslint --fix . --cache",
     "bootstrap": "run-s build:tools tools:convert_story",
-    "ci:main": "run-p build test eslint",
+    "ci:main": "run-p build test eslint tsc",
     "ci": "run-s bootstrap ci:main",
     "tools:convert_story": "node dist/tools/storyConverter.js",
-    "build:tools": "webpack --mode=development --config webpack.tools.config.js",
-    "build": "webpack --mode=development",
-    "build:release": "webpack --mode=production",
-    "watch": "webpack --mode=development --watch",
+    "build:tools": "esbuild ./tools/storyConverter.ts --bundle --platform=node --target=node14.6 --minify --tsconfig=tools.tsconfig.json --outfile=dist/tools/storyConverter.js",
+    "build": "esbuild ./bin/main.ts  --bundle --platform=node --target=node14.6 --outfile=dist/bin/main.js",
+    "build:release": "esbuild ./bin/main.ts  --bundle --platform=node --target=node14.6 --minify --outfile=dist/bin/main.js",
+    "watch": "esbuild ./bin/main.ts  --bundle --platform=node --target=node14.6 --watch --outfile=dist/bin/main.js",
     "tsc": "tsc --noEmit"
   },
   "author": "yumetodo",
@@ -36,6 +36,7 @@
     "@typescript-eslint/eslint-plugin": "^4.20.0",
     "@typescript-eslint/parser": "^4.20.0",
     "dayjs": "^1.10.4",
+    "esbuild": "^0.11.4",
     "eslint": "^7.23.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-node": "^11.1.0",
