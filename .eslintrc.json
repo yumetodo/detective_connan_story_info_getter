@@ -1,50 +1,41 @@
 {
-    "extends": [
-        "eslint:recommended",
-        "plugin:node/recommended",
-        "plugin:prettier/recommended"
+  "extends": ["eslint:recommended", "plugin:node/recommended", "prettier"],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "no-await-in-loop": "error",
+    "require-atomic-updates": "error",
+    "array-callback-return": "error",
+    "default-case": "error",
+    "no-alert": "error",
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "max-len": ["error", { "code": 120 }],
+    "space-before-blocks": "error",
+    "space-unary-ops": [
+      1,
+      {
+        "overrides": {
+          "typeof": false
+        }
+      }
     ],
-    "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module"
-    },
-    "env": {
-        "node": true,
-        "es6": true
-    },
-    "rules": {
-        "no-await-in-loop": "error",
-        "require-atomic-updates": "error",
-        "array-callback-return": "error",
-        "default-case": "error",
-        "no-alert": "error",
-        "quotes": ["error", "single", { "avoidEscape": true }],
-        "max-len": ["error", { "code": 120 }],
-        "space-before-blocks": "error",
-        "space-unary-ops":[
-            1, {
-                "overrides": {
-                    "typeof": false
-                }
-            }
-        ],
-        "operator-linebreak": [
-            "error", "after", {
-                "overrides": { "?": "before", ":": "before" }
-            }
-        ],
-        "quote-props": "off",
-        "no-useless-escape":"error",
-        "camelcase":"error",
-        "node/shebang": "error",
-        "node/no-unsupported-features/es-syntax": "off",
-        "prettier/prettier": [
-            "error", {
-                "singleQuote": true,
-                "trailingComma": "es5",
-                "printWidth": 120,
-                "arrowParens": "avoid"
-            }
-        ]
-    }
+    "operator-linebreak": [
+      "error",
+      "after",
+      {
+        "overrides": { "?": "before", ":": "before" }
+      }
+    ],
+    "quote-props": "off",
+    "no-useless-escape": "error",
+    "camelcase": "error",
+    "node/shebang": "error",
+    "node/no-unsupported-features/es-syntax": "off"
+  }
 }
