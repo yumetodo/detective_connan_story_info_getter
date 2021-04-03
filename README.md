@@ -23,7 +23,7 @@ npm link
 detective_connan_story_info_getter dateRange <開始日> <終了日>
 ```
 
-開始日、終了日の文字列の形式は、Moment.jsのドキュメントを参照してください。
+開始日、終了日の文字列の形式は、[dayjsに依存していてISO 8601形式ですが](https://day.js.org/docs/en/parse/string)、解説のわかりやすさの観点から、Moment.jsのドキュメントを参照してください。
 
 [Moment.js | Docs](https://momentjs.com/docs/#/parsing/string/)
 
@@ -52,7 +52,7 @@ $ detective_connan_story_info_getter dateRange 20180721 20181103
 detective_connan_story_info_getter date <放送日>
 ```
 
-放送日の文字列の形式は、Moment.jsのドキュメントを参照してください。
+放送日の文字列の形式は、[dayjsに依存していてISO 8601形式ですが](https://day.js.org/docs/en/parse/string)、解説のわかりやすさの観点から、Moment.jsのドキュメントを参照してください。
 
 [Moment.js | Docs](https://momentjs.com/docs/#/parsing/string/)
 

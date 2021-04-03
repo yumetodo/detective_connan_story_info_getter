@@ -1,4 +1,8 @@
-import moment from 'moment-timezone';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+dayjs.extend(utc);
+dayjs.extend(timezone);
 import fetch from 'node-fetch';
 import { CaseDatabase, CaseBase, Case, ReCase } from '../lib/CaseDatabase';
 import { parseCommandLine } from '../lib/CommandParser';
@@ -32,7 +36,7 @@ const main = async () => {
       break;
     }
     case 'date': {
-      const v = db.findByDate(moment(options.params[0]).tz(options.tz || 'Asia/Tokyo'));
+      const v = db.findByDate(dayjs(options.params[0]).tz(options.tz || 'Asia/Tokyo'));
       if (v) {
         if ('story_num' in v) {
           printLine(v, 0);
@@ -44,7 +48,7 @@ const main = async () => {
     }
     case 'dateRange': {
       const tz = options.tz || 'Asia/Tokyo';
-      const re = db.findByDateRange(moment(options.params[0]).tz(tz), moment(options.params[1]).tz(tz));
+      const re = db.findByDateRange(dayjs(options.params[0]).tz(tz), dayjs(options.params[1]).tz(tz));
       if (!options.asJson) {
         re.forEach((v, i) => {
           if ('story_num' in v) {

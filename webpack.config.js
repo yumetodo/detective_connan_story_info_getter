@@ -29,8 +29,5 @@ module.exports = (env, argv) => ({
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
-  plugins: [new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true })],
-  externals: {
-    'moment-timezone': 'require("moment-timezone")',
-  },
+  plugins: [new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true })]
 });

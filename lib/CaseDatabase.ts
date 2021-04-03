@@ -1,7 +1,13 @@
 'use strict';
 import { hasProperty, isArray } from './util';
 import * as PureDatabase from './PureDabase';
-import moment from 'moment-timezone';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import isBetween from 'dayjs/plugin/isBetween';
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(isBetween);
 
 interface RawCaseData {
   oa_date: string;
@@ -44,7 +50,7 @@ function investigateWhyIsNotRawCase(i: unknown): string {
   return re.join('\n');
 }
 export interface CaseBase {
-  oaDate: moment.Moment;
+  oaDate: dayjs.Dayjs;
   title: string;
 }
 const caseBaseCompare = (l: CaseBase, r: CaseBase) =>
@@ -77,7 +83,7 @@ const parseLocal = (data: unknown): LocalResult => {
       throw new Error('input data is broken.');
     }
     return {
-      oaDate: moment(c.oaDateId).tz('Asia/Tokyo'),
+      oaDate: dayjs(c.oaDateId).tz('Asia/Tokyo'),
       title: c.title,
       story_num: c.story_num,
     };
@@ -87,7 +93,7 @@ const parseLocal = (data: unknown): LocalResult => {
       throw new Error('input data is broken.');
     }
     return {
-      oaDate: moment(c.oaDateId).tz('Asia/Tokyo'),
+      oaDate: dayjs(c.oaDateId).tz('Asia/Tokyo'),
       title: c.title,
       story_num: c.story_num,
       pureTitle: c.pureTitle,
@@ -98,7 +104,7 @@ const parseLocal = (data: unknown): LocalResult => {
       throw new Error('input data is broken.');
     }
     return {
-      oaDate: moment(c.oaDateId).tz('Asia/Tokyo'),
+      oaDate: dayjs(c.oaDateId).tz('Asia/Tokyo'),
       title: c.title,
     };
   });
@@ -107,7 +113,7 @@ const parseLocal = (data: unknown): LocalResult => {
       throw new Error('input data is broken.');
     }
     return {
-      oaDate: moment(c.oaDateId).tz('Asia/Tokyo'),
+      oaDate: dayjs(c.oaDateId).tz('Asia/Tokyo'),
       title: c.title,
     };
   });
@@ -138,14 +144,14 @@ const parseRemote = (data: unknown): [Case[], ReCase[]] => {
     if (c.delete_flag !== 0) continue;
     if (c.data.episode.startsWith('R')) {
       re.push({
-        oaDate: moment(c.data.oa_date).tz('Asia/Tokyo'),
+        oaDate: dayjs(c.data.oa_date).tz('Asia/Tokyo'),
         title: c.data.title,
         // c.data.episode is unreliable so that we don't have to remove 'R' prefix.
         story_num: c.data.episode,
       });
     } else {
       pure.push({
-        oaDate: moment(c.data.oa_date).tz('Asia/Tokyo'),
+        oaDate: dayjs(c.data.oa_date).tz('Asia/Tokyo'),
         title: c.data.title,
         story_num: c.data.episode,
       });
@@ -153,7 +159,7 @@ const parseRemote = (data: unknown): [Case[], ReCase[]] => {
   }
   return [pure, re];
 };
-const findByDateRange = <C extends CaseBase>(target: C[], before: moment.Moment, after: moment.Moment) =>
+const findByDateRange = <C extends CaseBase>(target: C[], before: dayjs.Dayjs, after: dayjs.Dayjs) =>
   target.filter(c => c.oaDate.isBetween(before, after, null, '[]')).reverse();
 const push_ = Array.prototype.push;
 const replaceScarletCase = (title: string) => {
@@ -215,7 +221,7 @@ export class CaseDatabase {
       }
     });
   }
-  private findByDateRangeImpl(before: moment.Moment, after: moment.Moment): (CaseBase | Case | ReCase)[] {
+  private findByDateRangeImpl(before: dayjs.Dayjs, after: dayjs.Dayjs): (CaseBase | Case | ReCase)[] {
     return [
       ...findByDateRange(this.pure_, before, after),
       ...findByDateRange(this.re_, before, after),
@@ -223,13 +229,13 @@ export class CaseDatabase {
       ...findByDateRange(this.magicKaito_, before, after),
     ];
   }
-  findByDateRange(before: moment.Moment, after: moment.Moment): (CaseBase | Case | ReCase)[] {
+  findByDateRange(before: dayjs.Dayjs, after: dayjs.Dayjs): (CaseBase | Case | ReCase)[] {
     return (before.isBefore(after)
       ? this.findByDateRangeImpl(before, after)
       : this.findByDateRangeImpl(after, before)
     ).sort(caseBaseCompare);
   }
-  findByDate(date: moment.Moment): CaseBase | Case | ReCase | null {
+  findByDate(date: dayjs.Dayjs): CaseBase | Case | ReCase | null {
     const cond = <C extends CaseBase>(c: C) => c.oaDate.isSame(date, 'day');
     const checkLen = <T>(c: T[]) => {
       if (c.length !== 0) {

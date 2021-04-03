@@ -16,7 +16,8 @@ OPERATIONS
         - "2020-01-04 18:00:00"
 
         More information about date format, watch
-        https://momentjs.com/docs/#/parsing/string/
+        - https://day.js.org/docs/en/parse/string
+        - https://momentjs.com/docs/#/parsing/string/
     dateRange <first date> <last date>
         search by range of dates
     title <title>

@@ -2,10 +2,13 @@ import { CaseDatabase } from '../lib/CaseDatabase';
 import { readFile } from 'fs';
 import { promisify } from 'util';
 import * as path from 'path';
-import moment from 'moment-timezone';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+dayjs.extend(utc);
+dayjs.extend(timezone);
 import fetch from 'node-fetch';
 const readFileAsync = promisify(readFile);
-const endOfSearchDay = moment('2020-07-19T10:00:00+09:00').tz('Asia/Tokyo');
 let db: CaseDatabase | undefined;
 describe('CaseDatabase', () => {
   beforeAll(async () => {
@@ -20,6 +23,7 @@ describe('CaseDatabase', () => {
   it('findByStoryNum', () => {
     expect(db).not.toBeUndefined();
     if (db) {
+      const endOfSearchDay = dayjs('2020-07-19T10:00:00+09:00').tz('Asia/Tokyo');
       expect(db.findByStoryNum('1').filter(c => c.oaDate.isBefore(endOfSearchDay))).toHaveLength(2);
       expect(db.findByStoryNum('143').filter(c => c.oaDate.isBefore(endOfSearchDay))).toHaveLength(2);
       expect(db.findByStoryNum('974').filter(c => c.oaDate.isBefore(endOfSearchDay))).toHaveLength(1);
@@ -28,14 +32,14 @@ describe('CaseDatabase', () => {
   it('findByDate', () => {
     expect(db).not.toBeUndefined();
     if (db) {
-      expect(db.findByDate(moment('20191123').tz('Asia/Tokyo'))).not.toBeNull();
+      expect(db.findByDate(dayjs('20191123').tz('Asia/Tokyo'))).not.toBeNull();
     }
   });
   it('findByDateRange', () => {
     expect(db).not.toBeUndefined();
     if (db) {
       expect(
-        db.findByDateRange(moment('20191123').tz('Asia/Tokyo'), moment('2020-01-04 18:00:00').tz('Asia/Tokyo'))
+        db.findByDateRange(dayjs('20191123').tz('Asia/Tokyo'), dayjs('2020-01-04 18:00:00').tz('Asia/Tokyo'))
       ).toHaveLength(7);
     }
   });
