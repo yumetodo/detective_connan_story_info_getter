@@ -11,6 +11,7 @@ module.exports = (env, argv) => ({
   entry: {
     'bin/main': './bin/main.ts',
   },
+  mode: argv.mode,
   devtool: argv.mode === 'development' ? 'inline-source-map' : 'source-map',
   target: 'node',
   node: {

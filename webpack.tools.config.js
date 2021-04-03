@@ -10,6 +10,7 @@ module.exports = (env, argv) => ({
   entry: {
     'tools/storyConverter': './tools/storyConverter.ts',
   },
+  mode: argv.mode,
   devtool: argv.mode === 'development' ? 'inline-source-map' : 'source-map',
   target: 'node',
   node: {
