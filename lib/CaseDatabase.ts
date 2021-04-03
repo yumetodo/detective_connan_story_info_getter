@@ -156,8 +156,15 @@ const parseRemote = (data: unknown): [Case[], ReCase[]] => {
 const findByDateRange = <C extends CaseBase>(target: C[], before: moment.Moment, after: moment.Moment) =>
   target.filter(c => c.oaDate.isBetween(before, after, null, '[]')).reverse();
 const push_ = Array.prototype.push;
+const replaceScarletCase = (title: string) => {
+  if (!title.startsWith('緋色の帰還')) return undefined;
+  const k = '（デジタルリマスター）';
+  // 2021-04-10放送のタイトルは、緋色の帰還（真相）、なんと（デジタルリマスター）って書いてない！
+  const t = title.endsWith(k) ? title.substring(0, title.length - k.length) : title;
+  return t.replace(/緋色の帰還（([^）]+)）/, '緋色の$1');
+};
 const replaceMap = new Map([['大捜索 ９つのドア', '大捜索九つのドア']]);
-const replaceOrDefault = (title: string) => replaceMap.get(title) || title;
+const replaceOrDefault = (title: string) => replaceMap.get(title) || replaceScarletCase(title) || title;
 export class CaseDatabase {
   private pure_: Case[];
   private pureDB_: PureDatabase.PureDatabase<Case>;
