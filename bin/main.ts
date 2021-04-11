@@ -21,7 +21,7 @@ const printResultArrayAsJson = (v: (CaseBase | Case | ReCase)[]) => {
   printAsJson(re);
 };
 const printLine = (v: Case | ReCase, i: number) =>
-  console.log(`${i + 1},名探偵コナン第${v.story_num}話,${v.title},${v.oaDate.format('Y/M/D')}`);
+  console.log(`${i + 1},名探偵コナン第${v.story_num}話,${v.title},${v.oaDate.format('YYYY/M/D')}`);
 const main = async () => {
   const url = 'https://www.ytv.co.jp/conan/data/case.json';
   const db = new CaseDatabase(local, await fetch(url).then(r => r.json()));
@@ -41,7 +41,7 @@ const main = async () => {
         if ('story_num' in v) {
           printLine(v, 0);
         } else {
-          console.log(`1,${v.title},${v.oaDate.format('Y/M/D')}`);
+          console.log(`1,${v.title},${v.oaDate.format('YYYY/M/D')}`);
         }
       }
       break;
@@ -54,7 +54,7 @@ const main = async () => {
           if ('story_num' in v) {
             printLine(v, i);
           } else {
-            console.log(`${i + 1},${v.title},${v.oaDate.format('Y/M/D')}`);
+            console.log(`${i + 1},${v.title},${v.oaDate.format('YYYY/M/D')}`);
           }
         });
       } else {
@@ -69,7 +69,7 @@ const main = async () => {
           if ('story_num' in v) {
             printLine(v, i);
           } else {
-            console.log(`${i + 1},${v.title},${v.oaDate.format('Y/M/D')}`);
+            console.log(`${i + 1},${v.title},${v.oaDate.format('YYYY/M/D')}`);
           }
         });
       } else {
