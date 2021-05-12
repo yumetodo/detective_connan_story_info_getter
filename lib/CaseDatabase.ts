@@ -230,9 +230,8 @@ export class CaseDatabase {
     ];
   }
   findByDateRange(before: dayjs.Dayjs, after: dayjs.Dayjs): (CaseBase | Case | ReCase)[] {
-    return (before.isBefore(after)
-      ? this.findByDateRangeImpl(before, after)
-      : this.findByDateRangeImpl(after, before)
+    return (
+      before.isBefore(after) ? this.findByDateRangeImpl(before, after) : this.findByDateRangeImpl(after, before)
     ).sort(caseBaseCompare);
   }
   findByDate(date: dayjs.Dayjs): CaseBase | Case | ReCase | null {

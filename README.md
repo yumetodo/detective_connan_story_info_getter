@@ -4,9 +4,9 @@
 
 アニメ名探偵コナンの放送話を検索して列挙するコマンドです。
 
-ytv(読売テレビ)のデータは[古いもの(json形式)](http://www.ytv.co.jp/conan/data/story.json)と[新しいもの(json形式)](https://www.ytv.co.jp/conan/data/case.json)がありますが、この両方を使い、さらに元データの誤りを修復して、検索をします。
+ytv(読売テレビ)のデータは[古いもの(json 形式)](http://www.ytv.co.jp/conan/data/story.json)と[新しいもの(json 形式)](https://www.ytv.co.jp/conan/data/case.json)がありますが、この両方を使い、さらに元データの誤りを修復して、検索をします。
 
-出力はカンマ区切りです。もし放送タイトルにカンマが含まれることがあった場合は壊れます(ないでしょ。もしくは`--json`を末尾に渡してあげることでjsonとして出力します。
+出力はカンマ区切りです。もし放送タイトルにカンマが含まれることがあった場合は壊れます(ないでしょ。もしくは`--json`を末尾に渡してあげることで json として出力します。
 
 導入は以下の手順で可能です。
 
@@ -23,11 +23,11 @@ npm link
 detective_connan_story_info_getter dateRange <開始日> <終了日>
 ```
 
-開始日、終了日の文字列の形式は、[dayjsに依存していてISO 8601形式ですが](https://day.js.org/docs/en/parse/string)、解説のわかりやすさの観点から、Moment.jsのドキュメントを参照してください。
+開始日、終了日の文字列の形式は、[dayjs に依存していて ISO 8601 形式ですが](https://day.js.org/docs/en/parse/string)、解説のわかりやすさの観点から、Moment.js のドキュメントを参照してください。
 
 [Moment.js | Docs](https://momentjs.com/docs/#/parsing/string/)
 
-``` plain
+```plain
 $ detective_connan_story_info_getter dateRange 20180721 20181103
 1,名探偵コナン第908話,川床に流れた友情,2018/7/21
 2,名探偵コナン第909話,燃えるテントの怪（前編）,2018/7/28
@@ -52,7 +52,7 @@ $ detective_connan_story_info_getter dateRange 20180721 20181103
 detective_connan_story_info_getter date <放送日>
 ```
 
-放送日の文字列の形式は、[dayjsに依存していてISO 8601形式ですが](https://day.js.org/docs/en/parse/string)、解説のわかりやすさの観点から、Moment.jsのドキュメントを参照してください。
+放送日の文字列の形式は、[dayjs に依存していて ISO 8601 形式ですが](https://day.js.org/docs/en/parse/string)、解説のわかりやすさの観点から、Moment.js のドキュメントを参照してください。
 
 [Moment.js | Docs](https://momentjs.com/docs/#/parsing/string/)
 
@@ -91,7 +91,7 @@ detective_connan_story_info_getter storyNum <放送話番号>
 
 放送話番号は正の整数のみで入力してください。
 
-ytv(読売テレビ)の元データは特に再放送のものについてしばしば間違っており、手動で補正しています。補正漏れを見つけた場合はIssueに報告してください。
+ytv(読売テレビ)の元データは特に再放送のものについてしばしば間違っており、手動で補正しています。補正漏れを見つけた場合は Issue に報告してください。
 
 ```plain
 $detective_connan_story_info_getter storyNum 78
