@@ -14,8 +14,9 @@
   },
   "scripts": {
     "test": "jest --verbose",
-    "eslint": "eslint . --cache",
-    "eslint:fix": "eslint --fix . --cache",
+    "eslint": "eslint --ext .ts . --cache",
+    "eslint:fix": "eslint --ext .ts --fix . --cache",
+    "prettier": "prettier --write .",
     "bootstrap": "run-s build:tools tools:convert_story",
     "ci:main": "run-p build test eslint tsc",
     "ci": "run-s bootstrap ci:main",
