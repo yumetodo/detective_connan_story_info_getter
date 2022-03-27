@@ -1,7 +1,8 @@
 {
   "name": "detective_connan_story_info_getter",
   "version": "2.1.1",
-  "description": "Search animme detective connan story",
+  "type": "module",
+  "description": "Search anime detective connan story",
   "repository": {
     "type": "git",
     "url": "https://github.com/yumetodo/detective_connan_story_info_getter.git"
@@ -21,7 +22,7 @@
     "ci:main": "run-p build test eslint tsc",
     "ci": "run-s bootstrap ci:main",
     "tools:convert_story": "node dist/tools/storyConverter.js",
-    "build:tools": "esbuild ./tools/storyConverter.ts --bundle --platform=node --target=node14.6 --minify --tsconfig=tools.tsconfig.json --outfile=dist/tools/storyConverter.js",
+    "build:tools": "esbuild ./tools/storyConverter.ts --bundle --platform=node --target=node14.6 --minify --tsconfig=tools.tsconfig.json --format=esm --outfile=dist/tools/storyConverter.js",
     "build": "esbuild ./bin/main.ts  --bundle --platform=node --target=node14.6 --outfile=dist/bin/main.js",
     "build:release": "esbuild ./bin/main.ts  --bundle --platform=node --target=node14.6 --minify --outfile=dist/bin/main.js",
     "watch": "esbuild ./bin/main.ts  --bundle --platform=node --target=node14.6 --watch --outfile=dist/bin/main.js",
@@ -30,23 +31,23 @@
   "author": "yumetodo",
   "license": "BSL-1.0",
   "devDependencies": {
-    "@types/jest": "^26.0.23",
-    "@types/node": "^14.14.44",
-    "@types/node-fetch": "^2.5.10",
-    "@typescript-eslint/eslint-plugin": "^4.23.0",
-    "@typescript-eslint/parser": "^4.23.0",
-    "dayjs": "^1.10.4",
-    "esbuild": "^0.11.20",
-    "eslint": "^7.26.0",
+    "@tsconfig/node12": "^1.0.9",
+    "@types/jest": "^27.0.2",
+    "@types/node": "^14.17.21",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "dayjs": "^1.10.7",
+    "esbuild": "^0.13.4",
+    "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-node": "^11.1.0",
-    "jest": "^26.6.3",
-    "jest-junit": "^12.0.0",
-    "node-fetch": "^2.6.1",
+    "jest": "^27.2.5",
+    "jest-junit": "^13.0.0",
+    "node-fetch": "^3.0.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.3.0",
-    "ts-jest": "^26.5.6",
-    "typescript": "^4.2.4"
+    "prettier": "^2.4.1",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.3"
   },
   "jest": {
     "transform": {

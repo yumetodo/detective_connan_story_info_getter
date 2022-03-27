@@ -1,8 +1,10 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import fs from 'fs';
+import path from 'path';
+import url from 'url';
 import { CaseBase, Case, ReCase, PureDatabase } from '../lib/PureDabase';
-const resourcesPath = path.join(__dirname, '..', '..', 'resources');
-const data: Case[] = JSON.parse(fs.readFileSync(path.join(resourcesPath, 'story.json'), { encoding: 'utf-8' }))['item'];
+import { item as data } from '../resources/story.json';
+const dirname = path.dirname(url.fileURLToPath(import.meta.url));
+const resourcesPath = path.join(dirname, '..', '..', 'resources');
 // fill missing story number
 {
   let b = false;
